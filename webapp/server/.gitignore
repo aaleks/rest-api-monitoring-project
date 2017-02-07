@@ -1,0 +1,4 @@
+public/plugins
+public/stylesheets/style.css
+public/js/indexBundle.js
+node_modules/*

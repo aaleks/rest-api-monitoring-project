@@ -1,0 +1,5 @@
+{
+  "rootPathApps": "./resources/applications-tests",
+  "reportOutput":"./reports/",
+  "logDirectory" : "../logs/"
+}

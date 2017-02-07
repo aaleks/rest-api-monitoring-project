@@ -1,0 +1,20 @@
+{
+  "development": {
+    "database": "./db.db",
+    "dialect": "sqlite",
+    "logging": true
+  }, 
+  "test": {
+    "database": "./db.db",
+    "dialect": "sqlite",
+    "logging": true
+  }, 
+  "production": {
+    "database": "./db.db",
+    "dialect": "sqlite",
+    "logging": true
+  }
+}
+
+        
+        

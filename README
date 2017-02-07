@@ -1,0 +1,41 @@
+UTILITY TO RUN MULTIPLE TEST FROM A FOLDER USING NEWMAN
+=========
+
+A small library that adds commas to numbers
+
+INITIAL COMMIT: simple draft
+
+## Installation
+
+  `npm install`
+   Create reports and logs folder 
+
+## TODO :
+
+  Clean and remove dependencies
+  Create functions and split the code
+  Define log policy and log the relevant information
+  Comment the code
+  Add the test functions
+
+  //newman runner ->
+  Generate the reports
+
+  //api
+  define config.json for the API customization
+  Complete the endpoint
+  Check if sqlite database is needed ?
+  After split define the package.json with the right scripts
+
+  //webapp
+  Clean the webapp and remove JQuery usage in react components
+  After split define the package.json with the right scripts
+
+  =>Create a node_module for the newman runner part
+  =>Api wrapper around in another project (integrating the newman runner part as node_module)
+  =>Exclude the webapp also
+
+  add logs/*
+      reports/*
+      resources/*
+  to .gitignore

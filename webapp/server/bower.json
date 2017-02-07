@@ -1,0 +1,25 @@
+{
+  "name": "gui-rest-monitoring-bower",
+  "description": "",
+  "main": "",
+  "authors": [
+    "Aleksandar ANTONIJEVIC <aleksandar.antonijevics@gmail.com>"
+  ],
+  "license": "MIT",
+  "moduleType": [],
+  "homepage": "",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "public/plugins",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "jquery": "~3.0.0",
+    "bootstrap": "^3.3.7",
+    "font-awesome": "~4.6.3",
+    "select2": "^4.0.3"
+  }
+}

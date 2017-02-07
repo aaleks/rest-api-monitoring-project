@@ -1,0 +1,15 @@
+[
+    {
+      "hostname": "google.fr",
+      "testvalueBody" : "France"
+    },
+    {
+          
+      "hostname": "google.it",
+      "testvalueBody" : "Italia"
+    },
+    {
+      "hostname": "google.de",
+      "testvalueBody" : "Deutschlanddd"
+    }
+]

@@ -1,0 +1,32 @@
+{
+	"id": "859c1ef7-6510-7f0d-1140-bd39f76ce30e",
+	"name": "newman testcollection",
+	"description": "",
+	"order": [
+		"a074bcd7-0ea7-0ff2-df48-98e1de957f5e"
+	],
+	"folders": [],
+	"timestamp": 1486070725336,
+	"owner": 0,
+	"public": false,
+	"requests": [
+		{
+			"id": "a074bcd7-0ea7-0ff2-df48-98e1de957f5e",
+			"headers": "",
+			"url": "http://www.{{hostname}}",
+			"preRequestScript": null,
+			"pathVariables": {},
+			"method": "GET",
+			"data": null,
+			"dataMode": "params",
+			"tests": "tests[\"Status code is 200\"] = responseCode.code === 200;\ntests[\"Body matches string\"] = responseBody.has(\"Recherche\");",
+			"currentHelper": "normal",
+			"helperAttributes": {},
+			"time": 1486142806232,
+			"name": "google request",
+			"description": "http://www.google.fr simple request",
+			"collectionId": "859c1ef7-6510-7f0d-1140-bd39f76ce30e",
+			"responses": []
+		}
+	] 
+}

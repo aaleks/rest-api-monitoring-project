@@ -17,6 +17,7 @@ INITIAL COMMIT: simple draft
   Define log policy and log the relevant information
   Comment the code
   Add the test functions
+  Remove useless comments
 
   //newman runner ->
   Generate the reports
@@ -28,7 +29,7 @@ INITIAL COMMIT: simple draft
   Check if sqlite database is needed ?
   After split define the package.json with the right scripts
 
-  //webapp 
+  //webapp
   Clean the webapp and remove JQuery usage in react components
   After split define the package.json with the right scripts
 

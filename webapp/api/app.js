@@ -70,12 +70,5 @@ app.use(function (err, req, res, next) {
     res.json({'error': err.message});
 });
 
-/*
- var server = app.listen(3000, function () {
- var port = server.address().port;
- console.log('Example app listening at port %s', port);
- });
- */
-
 
 module.exports = app;

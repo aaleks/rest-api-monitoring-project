@@ -20,6 +20,7 @@
     "jquery": "~3.0.0",
     "bootstrap": "^3.3.7",
     "font-awesome": "~4.6.3",
-    "select2": "^4.0.3"
+    "select2": "^4.0.3",
+    "sweetalert": "^1.1.3"
   }
 }

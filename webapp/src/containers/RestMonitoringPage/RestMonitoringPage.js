@@ -14,8 +14,8 @@ export default class RestMonitoringPage extends BaseComponent {
     constructor() {
         super();
         this.state = {
-            data: [],
-            filteredData: Immutable.List(),
+            data: {},
+            filteredData: {},
             initialmain: true
         };
     }
@@ -25,7 +25,7 @@ export default class RestMonitoringPage extends BaseComponent {
         var _this = this;
         var allAppsFound = [];
         $.ajax({
-            url: Utilities.apiCall('/api/apps/getAllApplicationsList'),
+            url: Utilities.apiCall('/api/apps/getAllApplicationsDetails'),
             type: "GET",
             dataType: 'json',
             async: true

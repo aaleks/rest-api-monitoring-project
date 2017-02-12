@@ -21,19 +21,21 @@ INITIAL COMMIT: simple draft
   //newman runner ->
   Generate the reports
 
+
   //api
   define config.json for the API customization
   Complete the endpoint
   Check if sqlite database is needed ?
   After split define the package.json with the right scripts
 
-  //webapp
+  //webapp 
   Clean the webapp and remove JQuery usage in react components
   After split define the package.json with the right scripts
 
   =>Create a node_module for the newman runner part
   =>Api wrapper around in another project (integrating the newman runner part as node_module)
   =>Exclude the webapp also
+
 
   add logs/*
       reports/*

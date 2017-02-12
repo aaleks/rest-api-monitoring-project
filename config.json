@@ -1,5 +1,7 @@
 {
   "rootPathApps": "./resources/applications-tests",
   "reportOutput":"./reports/",
-  "logDirectory" : "../logs/"
+  "logDirectory" : "./logs/",
+  "iterationData": "./resources/data/",
+  "htmlTemplate" :"./html/template-default.hbs"
 }

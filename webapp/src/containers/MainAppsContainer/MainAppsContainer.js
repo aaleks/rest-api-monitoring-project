@@ -1,8 +1,19 @@
 import React, {Component} from 'react';
 import AppTableLine from '../../components/AppTableLine/AppTableLine'
 import style from './MainAppsContainer.scss'
-
+import * as Utilities from '../../utils/Utilities.js';
+import  JSONViewver from '../../utils/JSONViewer.js';
 export default class MainAppsContainer extends Component {
+
+
+    constructor() {
+        super();
+        this.state = {
+            response: []
+         }
+    }
+
+
     componentDidMount() {
 
         $('.btn-filter').on('click', function () {
@@ -41,7 +52,16 @@ export default class MainAppsContainer extends Component {
         });
 
         if (appArray.length != 0) {
-            alert("check" + JSON.stringify(appArray))
+            // alert("check" + JSON.stringify(appArray))
+            var that = this;
+
+            Utilities.apiCallAppChecker(appArray).always(function (response) {
+                //alert("res" + response)
+                that.setState({
+                    response: response
+                }, ()=> {
+                });
+            });
         }
     }
 
@@ -49,13 +69,14 @@ export default class MainAppsContainer extends Component {
     render() {
         var allApplications = [];
 
-        this.props.apps.map(function (currentApp, index) {
+
+        var that = this;
+        Object.keys(this.props.apps).forEach(function (key) {
             allApplications.push(
-                <AppTableLine key={index} appName={currentApp}
+                <AppTableLine key={key} appContent={that.props.apps[key]} appName={key}
                               currentCounter={allApplications.length}/>
             );
         });
-
 
         return (
 
@@ -95,13 +116,15 @@ export default class MainAppsContainer extends Component {
                                     <thead>
                                     <tr>
                                         <th className="col-check"><input type="checkbox" id="checkall"/></th>
+                                        {/*
                                         <th className="col-tools"><span className="glyphicon glyphicon-wrench"
                                                                         aria-hidden="true"/>
                                         </th>
-                                        <th className="hidden-xs" style={{textAlign: "center"}}>ID</th>
-                                        <th className="col-text">Name</th>
-                                        <th className="col-text">Email</th>
+                                         */}
+                                        <th className="hidden-xs" style={{textAlign: "center"}}>Name</th>
                                         <th className="col-text">Description</th>
+                                        <th className="col-text">Documentation Link</th>
+                                        <th className="col-text">Criticity</th>
                                         <th className="col-text">Force check</th>
                                     </tr>
                                     </thead>
@@ -128,6 +151,18 @@ export default class MainAppsContainer extends Component {
                                 </div>
                             </div>
                         </div>
+                    </div>
+                </div>
+                <div className="row">
+                    <div className="col-md-10 col-md-offset-1">
+                        <h1>Response Failed:</h1>
+                        <JSONViewver data={this.state.response.failed}/>
+                    </div>
+                </div>
+                <div className="row">
+                    <div className="col-md-10 col-md-offset-1">
+                        <h1>Response Succed:</h1>
+                        <JSONViewver data={this.state.response.succed}/>
                     </div>
                 </div>
             </div>

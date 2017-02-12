@@ -3,7 +3,7 @@ import React, {Component} from 'react';
 import Immutable from 'immutable';
 import BaseComponent from './../../components/BaseComponent.react.js';
 import styles from './QuickChecker.scss'
-import _ from 'lodash'
+import  JSONViewver from '../../utils/JSONViewer.js';
 import * as Utilities from '../../utils/Utilities.js';
 
 export default class QuickChecker extends BaseComponent {
@@ -15,7 +15,8 @@ export default class QuickChecker extends BaseComponent {
         this.state = {
             data: [],
             filteredData: Immutable.List(),
-            initialmain: true
+            initialmain: true,
+            response: []
         };
     }
 
@@ -93,46 +94,23 @@ export default class QuickChecker extends BaseComponent {
 
          */
 
+
         var arr = $("#appsfilter").val();
         //var a = ["a", "b", "c"];
-        if (arr != undefined && arr.length!=0) {
+        if (arr != undefined && arr.length != 0) {
             arr.forEach(function (entry) {
-                alert(entry);
+                //alert(entry);
             });
         }
 
+        var that = this;
 
-        $.ajax({
-            url: Utilities.apiCall('/api/apps/executeTestForApps'),
-            data: {
-                apps: arr
-            },
-            type: "POST",
-            dataType: 'json',
-            async: true
-        }).always(function (response) {
-            alert("res" + response)
-/*
-            if (response.response == "ok") {
-                var htmlContent = '<img id="bootboxid" src="' + Utilities.apiCall('/uploads/tmp/snapshot-video-tmp' + window.localStorage.getItem('userid') + '.png?dummy=' + Math.random()) + '" />'
-
-                if (_this.props.params.videoID) {
-                    htmlContent = '<img id="bootboxid" src="' + Utilities.apiCall('/uploads/videos/' + _this.state.video.videoSubSection + '/snapshot-video-' + _this.props.params.videoID + '-' + _this.state.video['owner_user'] + '.png?dummy=' + Math.random()) + '" />'
-                }
-
-                swal({
-                    title: "Cover Image Preview",
-                    text: htmlContent,
-                    html: true
-                });
-
-            } else {
-                swal("Error...", "Something went wrong during the snapshot creation try to refresh the page !", "error");
-            }
-*/
-
-            //alert("reponse " + JSON.stringify(response));
-
+        Utilities.apiCallAppChecker(arr).always(function (response) {
+            //alert("res" + response)
+            that.setState({
+                response: response
+            }, ()=> {
+            });
         });
 
     }
@@ -170,16 +148,21 @@ export default class QuickChecker extends BaseComponent {
                 <br/>
                 <div className="container">
                     <div className="row">
-                        <div className="col-md-6 col-md-offset-3" style={{textAlign: "center"}}>
-
-
-                            Loading...
-
-
+                        <div className="col-md-10 col-md-offset-1">
+                            <h1>Failed Response :</h1>
+                            <JSONViewver data={this.state.response.failed}/>
                         </div>
                     </div>
                 </div>
 
+                <div className="container">
+                    <div className="row">
+                        <div className="col-md-10 col-md-offset-1">
+                            <h1>Succed Response :</h1>
+                            <JSONViewver data={this.state.response.succed}/>
+                        </div>
+                    </div>
+                </div>
             </div>
         );
     }

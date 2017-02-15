@@ -25,9 +25,12 @@ function allTestedAppResult(options) {
 
     return new Promise((resolve, reject) => {
         CONFIG = options;
+
         var directoryList = requireDir(CONFIG.rootPathApps, {recurse: true});
         var allAppsTestedFailed = [];
         var allAppsTestedSucced = [];
+        var isCustomDataFile = (CONFIG.isCustomDataFile != undefined && CONFIG.isCustomDataFile == true) ? true :false;
+        var isCustomEnvDataJSON = (CONFIG.isCustomEnvDataJSON != undefined && CONFIG.isCustomEnvDataJSON == true) ? true :false;
 
         var appsToTest = [];
         if (CONFIG.appsToTest.length > 0) {
@@ -36,16 +39,20 @@ function allTestedAppResult(options) {
             appsToTest = directoryList;
         }
 
+        //TODO
+        if(CONFIG.contextFileEnabled == false || CONFIG.contextFileEnabled == undefined){
+        }
+
         logger.info("preparing call newman runner for apps: " + JSON.stringify(CONFIG.appsToTest));
         return Promise.map(Object.keys(appsToTest), currentKey => {
             var dataFile = null;
             try {
                 dataFile = appsToTest[currentKey].context[options.dataFile];
-                logger.info("using the data file at path : "+ CONFIG.iterationData + appsToTest[currentKey].context[options.dataFile] + " for app :" + currentKey)
+                logger.info("using the data file at path : "+ CONFIG.iterationData + " for app :" + currentKey)
             } catch (err) {
                 logger.error("missing dataFile for app " + currentKey)
             }
-            return runTestScriptForApp(appsToTest[currentKey], currentKey, CONFIG.iterationData + dataFile).catch(e => e)
+            return runTestScriptForApp(appsToTest[currentKey], currentKey, (isCustomDataFile ?CONFIG.dataFile :(CONFIG.iterationData + dataFile)),(isCustomEnvDataJSON ? CONFIG.envDataJSON :undefined)).catch(e => e)
         }, {concurrency: 2}).then((allSummary) => {
             //logger.data("Result of the runner " + JSON.stringify(allSummary[0]))
 
@@ -124,7 +131,6 @@ function allTestedAppResult(options) {
 
                         }
 
-
                 }
             });
 
@@ -141,7 +147,7 @@ function main(options) {
 }
 
 
-function runTestScriptForApp(collectionBase, key, dataFile) {
+function runTestScriptForApp(collectionBase, key, dataFile,envData) {
     return new Promise((resolve, reject) => {
         var uniqueUrls = {};
         var reportDirname = CONFIG.reportOutput + key;
@@ -154,7 +160,7 @@ function runTestScriptForApp(collectionBase, key, dataFile) {
         newman.run({
             collection: collectionBase.simplecollection,
             iterationData: dataFile,
-            environment: collectionBase.environment,
+            environment: envData != undefined ? envData : collectionBase.environment,
             reporters: "html",
             reporter: {
                 html: {

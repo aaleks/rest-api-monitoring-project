@@ -26,6 +26,7 @@ function executeNewman(apps){
     tmpConf.htmlTemplate = path.join(__dirname, rootFolder+CONFIG.htmlTemplate);
     tmpConf.dataFile = "dataFile1"; //base datafile
     tmpConf.appsToTest =apps; // empty if you want to test all apps
+    tmpConf.contextFileEnabled = true; //base datafile
     return mainFunction(tmpConf);
 }
 

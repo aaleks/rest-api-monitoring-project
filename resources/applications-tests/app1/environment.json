@@ -1,3 +1,6 @@
 {
-  "pool": ""
+    "values": [{
+        "key": "hostname",
+        "value": "google.it"
+    }]
 }

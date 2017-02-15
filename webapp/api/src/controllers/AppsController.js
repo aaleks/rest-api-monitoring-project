@@ -23,11 +23,11 @@ function executeNewman(apps){
     tmpConf.reportOutput = path.join(__dirname, rootFolder+CONFIG.reportOutput);
     tmpConf.rootPathApps = path.join(__dirname, rootFolder+CONFIG.rootPathApps);
     tmpConf.iterationData = path.join(__dirname, rootFolder+CONFIG.iterationData);
-    tmpConf.htmlTemplate = path.join(__dirname, rootFolder+CONFIG.iterationData);
+    tmpConf.htmlTemplate = path.join(__dirname, rootFolder+CONFIG.htmlTemplate);
     tmpConf.dataFile = "dataFile1"; //base datafile
     tmpConf.appsToTest =apps; // empty if you want to test all apps
     return mainFunction(tmpConf);
-}
+} 
 
 var AppsController = {
     index: function (req, res, next) {

@@ -10,7 +10,7 @@ export default class MainAppsContainer extends Component {
         super();
         this.state = {
             response: []
-         }
+        }
     }
 
 
@@ -117,9 +117,9 @@ export default class MainAppsContainer extends Component {
                                     <tr>
                                         <th className="col-check"><input type="checkbox" id="checkall"/></th>
                                         {/*
-                                        <th className="col-tools"><span className="glyphicon glyphicon-wrench"
-                                                                        aria-hidden="true"/>
-                                        </th>
+                                         <th className="col-tools"><span className="glyphicon glyphicon-wrench"
+                                         aria-hidden="true"/>
+                                         </th>
                                          */}
                                         <th className="hidden-xs" style={{textAlign: "center"}}>Name</th>
                                         <th className="col-text">Description</th>

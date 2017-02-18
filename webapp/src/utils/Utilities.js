@@ -54,7 +54,7 @@ export function asyncExecute(fn, callback, delay) {
 
 
 //custom function for checker can be changed to axios
-export function apiCallAppChecker(arrayApps){
+export function apiCallAppChecker(arrayApps) {
     return $.ajax({
         url: this.apiCall('/api/apps/executeTestForApps'),
         data: {

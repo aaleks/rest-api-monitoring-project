@@ -29,8 +29,8 @@ function allTestedAppResult(options) {
         var directoryList = requireDir(CONFIG.rootPathApps, {recurse: true});
         var allAppsTestedFailed = [];
         var allAppsTestedSucced = [];
-        var isCustomDataFile = (CONFIG.isCustomDataFile != undefined && CONFIG.isCustomDataFile == true) ? true :false;
-        var isCustomEnvDataJSON = (CONFIG.isCustomEnvDataJSON != undefined && CONFIG.isCustomEnvDataJSON == true) ? true :false;
+        var isCustomDataFile = (CONFIG.isCustomDataFile != undefined && CONFIG.isCustomDataFile == true) ? true : false;
+        var isCustomEnvDataJSON = (CONFIG.isCustomEnvDataJSON != undefined && CONFIG.isCustomEnvDataJSON == true) ? true : false;
 
         var appsToTest = [];
         if (CONFIG.appsToTest.length > 0) {
@@ -40,7 +40,7 @@ function allTestedAppResult(options) {
         }
 
         //TODO
-        if(CONFIG.contextFileEnabled == false || CONFIG.contextFileEnabled == undefined){
+        if (CONFIG.contextFileEnabled == false || CONFIG.contextFileEnabled == undefined) {
         }
 
         logger.info("preparing call newman runner for apps: " + JSON.stringify(CONFIG.appsToTest));
@@ -48,11 +48,11 @@ function allTestedAppResult(options) {
             var dataFile = null;
             try {
                 dataFile = appsToTest[currentKey].context[options.dataFile];
-                logger.info("using the data file at path : "+ CONFIG.iterationData + " for app :" + currentKey)
+                logger.info("using the data file at path : " + CONFIG.iterationData + " for app :" + currentKey)
             } catch (err) {
                 logger.error("missing dataFile for app " + currentKey)
             }
-            return runTestScriptForApp(appsToTest[currentKey], currentKey, (isCustomDataFile ?CONFIG.dataFile :(CONFIG.iterationData + dataFile)),(isCustomEnvDataJSON ? CONFIG.envDataJSON :undefined)).catch(e => e)
+            return runTestScriptForApp(appsToTest[currentKey], currentKey, (isCustomDataFile ? CONFIG.dataFile : (CONFIG.iterationData + dataFile)), (isCustomEnvDataJSON ? CONFIG.envDataJSON : undefined)).catch(e => e)
         }, {concurrency: 2}).then((allSummary) => {
             //logger.data("Result of the runner " + JSON.stringify(allSummary[0]))
 
@@ -68,68 +68,68 @@ function allTestedAppResult(options) {
                     currentJSONVar[currentApp] = element.err;
                     allAppsTestedFailed.push(currentJSONVar)
                 } else {
-                        if (element.run != undefined && element.run.executions != undefined) {
-                            var currentCallsFailedForApps = [];
-                            var currentCallsSuccedForApps = [];
+                    if (element.run != undefined && element.run.executions != undefined) {
+                        var currentCallsFailedForApps = [];
+                        var currentCallsSuccedForApps = [];
 
-                            element.run.executions.forEach((elm) => {
-                                    var currentErrorObject = {};
-                                    logger.info("sumUp" + element.collection.name + "current " + element.currentTested);
-                                    logger.info("sumUp" + elm.item.name);
+                        element.run.executions.forEach((elm) => {
+                                var currentErrorObject = {};
+                                logger.info("sumUp" + element.collection.name + "current " + element.currentTested);
+                                logger.info("sumUp" + elm.item.name);
 
-                                    currentErrorObject.collectionName = element.collection.name;
-                                    currentErrorObject.itemTested = elm.item.name;
-                                    currentErrorObject.urlCalled = elm.request.url.toString();
-                                    currentErrorObject.atHostname = url.parse(elm.request.url.toString()).hostname;
-                                    currentErrorObject.response = elm.response.body;
-
-
-                                    if (elm.requestError != undefined) {
-                                        currentErrorObject.error = elm.requestError.code;
-                                        currentErrorObject.message = elm.requestError.code;
-                                    } else if (elm.assertions.length > 0) {
+                                currentErrorObject.collectionName = element.collection.name;
+                                currentErrorObject.itemTested = elm.item.name;
+                                currentErrorObject.urlCalled = elm.request.url.toString();
+                                currentErrorObject.atHostname = url.parse(elm.request.url.toString()).hostname;
+                                currentErrorObject.response = elm.response.body;
 
 
-                                        elm.assertions.forEach((currentFilteredElement)=> {
-                                            if (currentFilteredElement.error != undefined) {
-                                                logger.info("Addind error for " + currentApp  + ", for call :" + currentErrorObject.urlCalled+" assertion for currentFilteredElement.error : " + JSON.stringify(currentFilteredElement.error))
-                                                if (currentErrorObject.message == undefined) {
-                                                    currentErrorObject.message = "";
-                                                }
-                                                currentErrorObject.message += currentFilteredElement.error.stack + " \n";
-                                                currentErrorObject.error = currentFilteredElement.error.name;
+                                if (elm.requestError != undefined) {
+                                    currentErrorObject.error = elm.requestError.code;
+                                    currentErrorObject.message = elm.requestError.code;
+                                } else if (elm.assertions.length > 0) {
+
+
+                                    elm.assertions.forEach((currentFilteredElement)=> {
+                                        if (currentFilteredElement.error != undefined) {
+                                            logger.info("Addind error for " + currentApp + ", for call :" + currentErrorObject.urlCalled + " assertion for currentFilteredElement.error : " + JSON.stringify(currentFilteredElement.error))
+                                            if (currentErrorObject.message == undefined) {
+                                                currentErrorObject.message = "";
                                             }
-                                        });
-                                        if (currentErrorObject.error == undefined) {
-                                            currentCallsSuccedForApps.push(currentErrorObject);
+                                            currentErrorObject.message += currentFilteredElement.error.stack + " \n";
+                                            currentErrorObject.error = currentFilteredElement.error.name;
                                         }
-
-                                    } else {
-                                        //added app to succed calls
+                                    });
+                                    if (currentErrorObject.error == undefined) {
                                         currentCallsSuccedForApps.push(currentErrorObject);
                                     }
-                                    if (currentErrorObject.error != undefined) {
-                                        logger.errornewman(JSON.stringify(currentErrorObject));
-                                        currentCallsFailedForApps.push(currentErrorObject);
-                                    }
+
+                                } else {
+                                    //added app to succed calls
+                                    currentCallsSuccedForApps.push(currentErrorObject);
                                 }
-                            )
-
-                            if (currentCallsFailedForApps.length > 0) {
-                                logger.info("Failed call added for " + currentApp);
-                                currentJSONVar[currentApp] = currentCallsFailedForApps;
-                                allAppsTestedFailed.push(currentJSONVar)
+                                if (currentErrorObject.error != undefined) {
+                                    logger.errornewman(JSON.stringify(currentErrorObject));
+                                    currentCallsFailedForApps.push(currentErrorObject);
+                                }
                             }
+                        )
 
-                            if (currentCallsSuccedForApps.length > 0) {
-                                logger.info("Succed call added for " + currentApp);
-                                currentSuccedJSONVar[currentApp] = currentCallsSuccedForApps;
-                                allAppsTestedSucced.push(currentSuccedJSONVar)
-                            }
-                        }else {
-                            logger.error("Nothing find for in Summary for, something went bad ! Missing error catching in the runTestScriptForApp function" + currentApp)
-
+                        if (currentCallsFailedForApps.length > 0) {
+                            logger.info("Failed call added for " + currentApp);
+                            currentJSONVar[currentApp] = currentCallsFailedForApps;
+                            allAppsTestedFailed.push(currentJSONVar)
                         }
+
+                        if (currentCallsSuccedForApps.length > 0) {
+                            logger.info("Succed call added for " + currentApp);
+                            currentSuccedJSONVar[currentApp] = currentCallsSuccedForApps;
+                            allAppsTestedSucced.push(currentSuccedJSONVar)
+                        }
+                    } else {
+                        logger.error("Nothing find for in Summary for, something went bad ! Missing error catching in the runTestScriptForApp function" + currentApp)
+
+                    }
 
                 }
             });
@@ -147,7 +147,7 @@ function main(options) {
 }
 
 
-function runTestScriptForApp(collectionBase, key, dataFile,envData) {
+function runTestScriptForApp(collectionBase, key, dataFile, envData) {
     return new Promise((resolve, reject) => {
         var uniqueUrls = {};
         var reportDirname = CONFIG.reportOutput + key;
@@ -171,11 +171,11 @@ function runTestScriptForApp(collectionBase, key, dataFile,envData) {
             bail: false
         }, function (err, summary) {
             if (err) {
-                logger.error("error for app in runTestScriptForApp: "+  key)
+                logger.error("error for app in runTestScriptForApp: " + key)
                 resolve({"err": err.stack, "currentTested": key});
             } else {
                 if (Object.keys(uniqueUrls).length == 0) {
-                    logger.error("NO URLS provided for app in runTestScriptForApp: "+  key);
+                    logger.error("NO URLS provided for app in runTestScriptForApp: " + key);
                     resolve({"err": "NO URLS provided", "currentTested": key})
                 } else {
                     logger.info("test run for " + key)
@@ -185,7 +185,7 @@ function runTestScriptForApp(collectionBase, key, dataFile,envData) {
             }
         }).on('request', function (err, args) {
             if (err) {
-                logger.info("error in on request for app : " +key )
+                logger.info("error in on request for app : " + key)
                 //reject(err);
             }
             var url = args.request.url.toString();
@@ -194,7 +194,7 @@ function runTestScriptForApp(collectionBase, key, dataFile,envData) {
             uniqueUrls[url] ?
                 (uniqueUrls[url] += 1) : (uniqueUrls[url] = 1);
         }).on('start', function (err, args) { // on start of run, log to console
-            logger.info('running a collection... for ' + key );
+            logger.info('running a collection... for ' + key);
 
         }).on('done', function (err, summary) {
             // list all unique URLs
@@ -203,10 +203,10 @@ function runTestScriptForApp(collectionBase, key, dataFile,envData) {
             });
 
             if (err || summary.error) {
-                logger.error('collection run encountered an error for : ' +key);
+                logger.error('collection run encountered an error for : ' + key);
             }
             else {
-                logger.info('collection run completed. for : ' +key);
+                logger.info('collection run completed. for : ' + key);
             }
         })
     });

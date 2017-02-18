@@ -7,6 +7,7 @@ h1 {
   -webkit-animation: twirl 1.4s linear infinite;
   animation: twirl 1.4s linear infinite;
 }
+
 .spinner-2:after, .spinner-2:before {
   position: absolute;
   margin-left: -10px;
@@ -16,6 +17,7 @@ h1 {
   height: 20px;
   background: #3DAAE5;
 }
+
 .spinner-2:after {
   top: auto;
   bottom: -10px;
@@ -26,6 +28,7 @@ h1 {
   -webkit-animation: grow 1s ease-in-out infinite;
   animation: grow 1s ease-in-out infinite;
 }
+
 .spinner-3:before {
   position: absolute;
   margin-top: -27px;
@@ -59,15 +62,18 @@ h1 {
   background: #3DAAE5;
   border-radius: 50%;
 }
+
 .loader-1 span:nth-child(1) {
   -webkit-animation: bounce 0.8s ease-in-out infinite;
   animation: bounce 0.8s ease-in-out infinite;
 }
+
 .loader-1 span:nth-child(2) {
   left: 40px;
   -webkit-animation: bounce 0.8s ease-in-out 0.25s infinite;
   animation: bounce 0.8s ease-in-out 0.25s infinite;
 }
+
 .loader-1 span:nth-child(3) {
   left: 80px;
   -webkit-animation: bounce 0.8s ease-in-out 0.5s infinite;
@@ -77,6 +83,7 @@ h1 {
 .loader-2 {
   background: transparent;
 }
+
 .loader-2 span {
   background: #3DAAE5;
   display: inline-block;
@@ -87,25 +94,30 @@ h1 {
   height: 80px;
   width: 15px;
 }
+
 .loader-2 span:nth-child(1) {
   -webkit-animation: fade 1s ease-in-out infinite;
   animation: fade 1s ease-in-out infinite;
 }
+
 .loader-2 span:nth-child(2) {
   left: 20%;
   -webkit-animation: fade 1s ease-in-out 0.2s infinite;
   animation: fade 1s ease-in-out 0.2s infinite;
 }
+
 .loader-2 span:nth-child(3) {
   left: 40%;
   -webkit-animation: fade 1s ease-in-out 0.4s infinite;
   animation: fade 1s ease-in-out 0.4s infinite;
 }
+
 .loader-2 span:nth-child(4) {
   left: 60%;
   -webkit-animation: fade 1s ease-in-out 0.6s infinite;
   animation: fade 1s ease-in-out 0.6s infinite;
 }
+
 .loader-2 span:nth-child(5) {
   left: 80%;
   -webkit-animation: fade 1s ease-in-out 0.8s infinite;
@@ -121,6 +133,7 @@ h1 {
   -webkit-animation: wobble 2s ease-in-out infinite;
   animation: wobble 2s ease-in-out infinite;
 }
+
 .loader-3 span {
   position: absolute;
   top: 3px;
@@ -157,6 +170,7 @@ h1 {
     transform: rotate(360deg) scale(1);
   }
 }
+
 @-webkit-keyframes twirl {
   0% {
     -webkit-transform: rotate(0deg) scale(0.8);
@@ -171,6 +185,7 @@ h1 {
     transform: rotate(-360deg) scale(0.8);
   }
 }
+
 @keyframes twirl {
   0% {
     -webkit-transform: rotate(0deg) scale(0.8);
@@ -185,6 +200,7 @@ h1 {
     transform: rotate(-360deg) scale(0.8);
   }
 }
+
 @-webkit-keyframes grow {
   0%, 100% {
     -webkit-transform: scale(0.9);
@@ -195,6 +211,7 @@ h1 {
     transform: scale(1.1);
   }
 }
+
 @keyframes grow {
   0%, 100% {
     -webkit-transform: scale(0.9);
@@ -205,6 +222,7 @@ h1 {
     transform: scale(1.1);
   }
 }
+
 @-webkit-keyframes bounce {
   0%, 100% {
     -webkit-transform: translateY(0px);
@@ -215,6 +233,7 @@ h1 {
     transform: translateY(-25px);
   }
 }
+
 @keyframes bounce {
   0%, 100% {
     -webkit-transform: translateY(0px);
@@ -225,6 +244,7 @@ h1 {
     transform: translateY(-25px);
   }
 }
+
 @-webkit-keyframes fade {
   0%, 100% {
     opacity: 0;
@@ -233,6 +253,7 @@ h1 {
     opacity: 1;
   }
 }
+
 @keyframes fade {
   0%, 100% {
     opacity: 0;
@@ -241,6 +262,7 @@ h1 {
     opacity: 1;
   }
 }
+
 @-webkit-keyframes wobble {
   0% {
     -webkit-transform: translateY(-50%) scale(1);
@@ -263,6 +285,7 @@ h1 {
     transform: translateY(-50%) scale(1);
   }
 }
+
 @keyframes wobble {
   0% {
     -webkit-transform: translateY(-50%) scale(1);

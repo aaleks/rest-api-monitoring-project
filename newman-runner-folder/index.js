@@ -65,7 +65,9 @@ function allTestedAppResult(options) {
                                 if (elm.requestError != undefined) {
                                     currentErrorObject.error = elm.requestError.code;
                                     currentErrorObject.message = elm.requestError.code;
-                                } else if (elm.assertions.length > 0) {
+                                } else if (elm.response.code == 502){
+                                    currentCallsFailedForApps.push(currentErrorObject);
+                                }else if (elm.assertions.length > 0) {
 
 
                                     elm.assertions.forEach((currentFilteredElement)=> {
@@ -86,6 +88,7 @@ function allTestedAppResult(options) {
                                     //added app to succed calls
                                     currentCallsSuccedForApps.push(currentErrorObject);
                                 }
+
                                 if (currentErrorObject.error != undefined) {
                                     logger.errornewman(JSON.stringify(currentErrorObject));
                                     currentCallsFailedForApps.push(currentErrorObject);

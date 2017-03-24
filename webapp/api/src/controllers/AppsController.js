@@ -2,7 +2,7 @@
  * Created by Aleksandar ANTONIJEVIC on 05/02/2017.
  */
 var express = require('express');
-var models = require('../models');
+//var models = require('../models');
 const fs = require('fs');
 const path = require('path');
 var requireDir = require('require-dir');

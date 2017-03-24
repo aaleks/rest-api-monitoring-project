@@ -1,8 +1,11 @@
 {
-  "dataFile1": "hostnames/PROD/pool-1/hostnames.json",
-  "dataFile2": "hostnames/PROD/pool-1/hostnames.json",
-  "dataFile3": "hostnames/PROD/pool-1/hostnames.json",
-  "description" : "a little description for this App 2",
+  "iterationData-PROD": ["/hostnames/PROD/hostnames.json"],
+  "iterationData-STG": ["/hostnames/PROD/hostnames.json"],
+  "iterationData-PRE": ["/hostnames/PROD/hostnames.json"],
+  "environment-PROD": ["environment.json"],
+  "environment-STG": ["environment.json"],
+  "environment-PRE": ["environment.json"],
+  "description" : "a little description for this App 1",
   "criticity" : "High/Low/Medium",
   "urlDocumentLink" : "http://"
 }

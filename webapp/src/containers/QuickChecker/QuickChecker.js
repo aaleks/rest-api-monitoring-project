@@ -105,7 +105,7 @@ export default class QuickChecker extends BaseComponent {
 
         var that = this;
 
-        Utilities.apiCallAppChecker(arr).always(function (response) {
+        Utilities.apiCallAppChecker(arr,{prod:($("#prod").prop("checked") === true )? "PROD" : "STG"}).always(function (response) {
             //alert("res" + response)
             that.setState({
                 response: response
@@ -141,7 +141,17 @@ export default class QuickChecker extends BaseComponent {
                         </div>
                     </div>
                 </div>
-
+                <div className="row">
+                    <div className="col-md-10 col-md-offset-1">
+                        <li className="list-group-item">
+                            Disable testing on PROD
+                            <div className="material-switch pull-right">
+                                <input id="prod" name="prod" type="checkbox" />
+                                <label htmlFor="prod" className="label-success"></label>
+                            </div>
+                        </li>
+                    </div>
+                </div>
 
                 <br/>
                 <br/>

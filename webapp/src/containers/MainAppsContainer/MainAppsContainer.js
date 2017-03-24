@@ -54,14 +54,18 @@ export default class MainAppsContainer extends Component {
         if (appArray.length != 0) {
             // alert("check" + JSON.stringify(appArray))
             var that = this;
-
-            Utilities.apiCallAppChecker(appArray).always(function (response) {
+            Utilities.apiCallAppChecker(appArray,{prod:($("#prod").prop("checked") === true )? "PROD" : "STG"}).always(function (response) {
                 //alert("res" + response)
                 that.setState({
                     response: response
                 }, ()=> {
                 });
             });
+        }
+    }
+    enableProd(){
+        if($("#prod").prop("checked")) {
+        } else {
         }
     }
 
@@ -151,6 +155,17 @@ export default class MainAppsContainer extends Component {
                                 </div>
                             </div>
                         </div>
+                    </div>
+                </div>
+                <div className="row">
+                    <div className="col-md-10 col-md-offset-1">
+                        <li className="list-group-item">
+                            Disable testing on PROD
+                            <div className="material-switch pull-right">
+                                <input id="prod" name="prod" type="checkbox" onChange={this.enableProd.bind(this)}/>
+                                <label htmlFor="prod" className="label-success"></label>
+                            </div>
+                        </li>
                     </div>
                 </div>
                 <div className="row">

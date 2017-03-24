@@ -1,3 +1,6 @@
+//http://localhost:3000/api/apps/executeTestForApps POST for api
+//test file not valid
+
 var mainFunction = require('./newman-runner-folder/index.js');
 
 var path = require('path');
@@ -12,7 +15,7 @@ CONFIG.htmlTemplate = path.join(__dirname, CONFIG.htmlTemplate);
 CONFIG.contextFileEnabled = true; //base datafile
 
 CONFIG.dataFile = "dataFile1"; //base datafile
-CONFIG.appsToTest = ["app1"]; // empty if you want to test all apps
+CONFIG.appsToTest = ["app3"]; // empty if you want to test all apps
 
 mainFunction(CONFIG).then((allSummary) => {
     console.log("ALL DONE " + JSON.stringify(allSummary.failed));

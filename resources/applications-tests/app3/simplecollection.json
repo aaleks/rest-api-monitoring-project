@@ -1,0 +1,45 @@
+{
+	"variables": [],
+	"info": {
+		"name": "newman testcollection main folder",
+		"_postman_id": "859c1ef7-6510-7f0d-1140-bd39f76ce30e",
+		"description": "",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "newman title on GET",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Status code is 200\"] = responseCode.code === 200;",
+							"tests[\"Response time is less than 200ms\"] = responseTime < 10000;",
+							"tests[\"Body matches string\"] = responseBody.has(data.testvalueBody); "
+						]
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"console.log(\"hostname : \" + data.hostname);",
+							"console.log(\"test value : \" + data.testvalueBody);"
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "http://www.{{hostname}}",
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"description": "newman description under title"
+			},
+			"response": []
+		}
+	]
+}

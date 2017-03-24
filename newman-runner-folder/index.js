@@ -4,7 +4,6 @@ var CONFIG = {};
 var _ = require('lodash');
 var Promise = require('bluebird');
 var newman = require('newman'), fs = require('fs');
-var requireDir = require('require-dir');
 var dateFormat = require('dateformat');
 
 var logger = require("./utils/logger");
@@ -24,35 +23,14 @@ function filterApps(allApps, accepted) {
 function allTestedAppResult(options) {
 
     return new Promise((resolve, reject) => {
-        CONFIG = options;
 
-        var directoryList = requireDir(CONFIG.rootPathApps, {recurse: true});
+
         var allAppsTestedFailed = [];
         var allAppsTestedSucced = [];
-        var isCustomDataFile = (CONFIG.isCustomDataFile != undefined && CONFIG.isCustomDataFile == true) ? true : false;
-        var isCustomEnvDataJSON = (CONFIG.isCustomEnvDataJSON != undefined && CONFIG.isCustomEnvDataJSON == true) ? true : false;
 
-        var appsToTest = [];
-        if (CONFIG.appsToTest.length > 0) {
-            appsToTest = filterApps(directoryList, CONFIG.appsToTest);
-        } else {
-            appsToTest = directoryList;
-        }
-
-        //TODO
-        if (CONFIG.contextFileEnabled == false || CONFIG.contextFileEnabled == undefined) {
-        }
-
-        logger.info("preparing call newman runner for apps: " + JSON.stringify(CONFIG.appsToTest));
-        return Promise.map(Object.keys(appsToTest), currentKey => {
-            var dataFile = null;
-            try {
-                dataFile = appsToTest[currentKey].context[options.dataFile];
-                logger.info("using the data file at path : " + CONFIG.iterationData + " for app :" + currentKey)
-            } catch (err) {
-                logger.error("missing dataFile for app " + currentKey)
-            }
-            return runTestScriptForApp(appsToTest[currentKey], currentKey, (isCustomDataFile ? CONFIG.dataFile : (CONFIG.iterationData + dataFile)), (isCustomEnvDataJSON ? CONFIG.envDataJSON : undefined)).catch(e => e)
+        logger.info("preparing call newman runner for apps: " + Object.keys(options));
+        return Promise.map(Object.keys(options), currentKey => {
+            return runTestScriptForApp(currentKey, options[currentKey].postmanFile, options[currentKey]).catch(e => e)
         }, {concurrency: 2}).then((allSummary) => {
             //logger.data("Result of the runner " + JSON.stringify(allSummary[0]))
 
@@ -146,46 +124,43 @@ function main(options) {
 
 }
 
-
-function runTestScriptForApp(collectionBase, key, dataFile, envData) {
+//testedAppName is the name of the application currently tested
+//collectionBase contains all options except env + dataFile
+function runTestScriptForApp(testedAppName, postmanCollectionFile, options) {
     return new Promise((resolve, reject) => {
         var uniqueUrls = {};
-        var reportDirname = CONFIG.reportOutput + key;
 
-        if (!fs.existsSync(reportDirname)) {
-            logger.info("Directory " + key + "doesn't exist. Creation.... ")
-            fs.mkdirSync(reportDirname);
-        }
-
+        logger.info(JSON.stringify(options.iterationData));
+        logger.info(JSON.stringify(options.environmentData));
         newman.run({
-            collection: collectionBase.simplecollection,
-            iterationData: dataFile,
-            environment: envData != undefined ? envData : collectionBase.environment,
+            collection: postmanCollectionFile,
+            iterationData: options.iterationData,
+            environment: options.environmentData,
             reporters: "html",
             reporter: {
                 html: {
-                    export: reportDirname + '/report-' + dateFormat(new Date(), "dd-mm-yy_h:MM:ss") + '.html',
-                    template: CONFIG.htmlTemplate
+                    export: options.reportOutput + 'report-' + dateFormat(new Date(), "dd-mm-yy_h:MM:ss") + '.html',
+                    template: options.htmlTemplate
                 }
             },
             bail: false
         }, function (err, summary) {
             if (err) {
-                logger.error("error for app in runTestScriptForApp: " + key)
-                resolve({"err": err.stack, "currentTested": key});
+                logger.error("error for app in runTestScriptForApp: " + testedAppName)
+                resolve({"err": err.stack, "currentTested": testedAppName});
             } else {
                 if (Object.keys(uniqueUrls).length == 0) {
-                    logger.error("NO URLS provided for app in runTestScriptForApp: " + key);
-                    resolve({"err": "NO URLS provided", "currentTested": key})
+                    logger.error("NO URLS provided for app in runTestScriptForApp: " + testedAppName);
+                    resolve({"err": "NO URLS provided", "currentTested": testedAppName})
                 } else {
-                    logger.info("test run for " + key)
-                    summary.currentTested = key;
+                    logger.info("test run for " + testedAppName)
+                    summary.currentTested = testedAppName;
                     resolve(summary);
                 }
             }
         }).on('request', function (err, args) {
             if (err) {
-                logger.info("error in on request for app : " + key)
+                logger.info("error in on request for app : " + testedAppName)
                 //reject(err);
             }
             var url = args.request.url.toString();
@@ -194,7 +169,7 @@ function runTestScriptForApp(collectionBase, key, dataFile, envData) {
             uniqueUrls[url] ?
                 (uniqueUrls[url] += 1) : (uniqueUrls[url] = 1);
         }).on('start', function (err, args) { // on start of run, log to console
-            logger.info('running a collection... for ' + key);
+            logger.info('running a collection... for ' + testedAppName);
 
         }).on('done', function (err, summary) {
             // list all unique URLs
@@ -203,10 +178,10 @@ function runTestScriptForApp(collectionBase, key, dataFile, envData) {
             });
 
             if (err || summary.error) {
-                logger.error('collection run encountered an error for : ' + key);
+                logger.error('collection run encountered an error for : ' + testedAppName);
             }
             else {
-                logger.info('collection run completed. for : ' + key);
+                logger.info('collection run completed. for : ' + testedAppName);
             }
         })
     });

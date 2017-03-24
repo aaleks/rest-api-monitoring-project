@@ -82,7 +82,6 @@ transports.push(new (require('winston-daily-rotate-file'))({
  }));
  */
 
-
 transports.push(new (require('winston-daily-rotate-file'))({
     name: "errornewman-file",
     level: 'errornewman',
@@ -143,7 +142,6 @@ var logger = new winston.Logger({
 });
 
 //winston.remove(winston.transports.Console);
-
 
 module.exports = logger;
 module.exports.stream = {

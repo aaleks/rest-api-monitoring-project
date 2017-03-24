@@ -1,7 +1,7 @@
 /* jshint indent: 2 */
 
 module.exports = function (sequelize, DataTypes) {
-    var Apps = sequelize.define("Apps", {
+    var Checks = sequelize.define("Checks", {
         name: {
             type: DataTypes.STRING,
             allowNull: false
@@ -9,10 +9,9 @@ module.exports = function (sequelize, DataTypes) {
     }, {
         classMethods: {
             associate: function (models) {
-                Apps.hasMany(models.Checks, {foreignKey: 'checked_app'});
+                Checks.belongsTo(models.Apps, {foreignKey: 'checked_app', allowNull: false});
             }
         }
     });
-
-    return Apps;
+    return Checks;
 };

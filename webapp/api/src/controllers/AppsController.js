@@ -17,15 +17,49 @@ function getDirectories(srcpath) {
         .filter(file => fs.statSync(path.join(srcpath, file)).isDirectory())
 }
 
-function executeNewman(apps) {
+function executeNewman(args) {
     var tmpConf = {};
-    tmpConf.reportOutput = path.join(__dirname, rootFolder + CONFIG.reportOutput);
-    tmpConf.rootPathApps = path.join(__dirname, rootFolder + CONFIG.rootPathApps);
-    tmpConf.iterationData = path.join(__dirname, rootFolder + CONFIG.iterationData);
-    tmpConf.htmlTemplate = path.join(__dirname, rootFolder + CONFIG.htmlTemplate);
-    tmpConf.dataFile = "dataFile1"; //base datafile
-    tmpConf.appsToTest = apps; // empty if you want to test all apps
-    tmpConf.contextFileEnabled = true; //base datafile
+
+    var apps = args.apps;
+    var targetedEnv = args.prod;
+    console.log( " args.prod  " + args.prod)
+    //all apps here
+    var directoryList = requireDir(path.join(__dirname, rootFolder + CONFIG.rootPathApps), {recurse: true});
+    if (apps.length == 0) {
+        apps = Object.keys(directoryList);
+    }
+    var tmpConf = {};
+
+    apps.forEach(function (currentAppName) {
+        tmpConf[currentAppName] = {};
+        tmpConf[currentAppName].reportOutput = path.join(__dirname, rootFolder + CONFIG.reportOutput) + currentAppName + "/";
+        tmpConf[currentAppName].rootPathApps = path.join(__dirname, rootFolder + CONFIG.rootPathApps);
+
+        tmpConf[currentAppName].logDirectory = path.join(__dirname, rootFolder + CONFIG.logDirectory);
+        tmpConf[currentAppName].htmlTemplate = path.join(__dirname, rootFolder + CONFIG.htmlTemplate);
+
+        tmpConf[currentAppName].contextFileEnabled = false; //base datafile
+
+        tmpConf[currentAppName].postmanFile = require(tmpConf[currentAppName].rootPathApps + currentAppName + "/simplecollection.json"); // empty if you want to test all apps
+
+        tmpConf[currentAppName].iterationData = require(path.join(__dirname, rootFolder + CONFIG.iterationData + directoryList[currentAppName]["context"]["iterationData-"+targetedEnv]));
+        // tmpConf[currentAppName].environmentData = [{"key": "hostname","value": "google.it"},{"key": "hostname11","value": "google.it"}]
+
+        tmpConf[currentAppName].environmentData = require(tmpConf[currentAppName].rootPathApps + currentAppName + "/" + directoryList[currentAppName]["context"]["environment-"+targetedEnv]);
+
+        //added default env object
+        tmpConf[currentAppName].environmentData.values = tmpConf[currentAppName].environmentData.values.concat(require(path.join(__dirname, rootFolder + CONFIG.iterationData + "environment/"+targetedEnv+"/environment.json")).values)
+        //CONFIG[currentAppName].environmentData = directoryList[currentAppName]["environment-PROD"];
+        //console.log("tmpConf[currentAppName].environmentData" + JSON.stringify(tmpConf[currentAppName].environmentData))
+
+        // check report output
+        if (!fs.existsSync(tmpConf[currentAppName].reportOutput)) {
+            //logger.info("Directory " + currentAppName + "doesn't exist. Creation.... ")
+            fs.mkdirSync(tmpConf[currentAppName].reportOutput);
+        }
+
+    });
+
     return mainFunction(tmpConf);
 }
 
@@ -51,12 +85,13 @@ var AppsController = {
     },
     executeTestForApps: function (req, res, next) {
         console.log(req.body.apps);
-        executeNewman(req.body.apps).then((allSummary) => {
+        //here contruct the apps
+
+        executeNewman(req.body).then((allSummary) => {
             return res.json(allSummary)
         }).catch((err) => {
             console.log("BIG ERROR NEEDS TO BE INVESTIGATE " + err);
             return res.statusCode(500).json("BIG ERROR NEEDS TO BE INVESTIGATE ");
-
         });
     }
 };

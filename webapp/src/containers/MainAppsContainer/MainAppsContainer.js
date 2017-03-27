@@ -3,6 +3,7 @@ import AppTableLine from '../../components/AppTableLine/AppTableLine'
 import style from './MainAppsContainer.scss'
 import * as Utilities from '../../utils/Utilities.js';
 import  JSONViewver from '../../utils/JSONViewer.js';
+
 export default class MainAppsContainer extends Component {
 
 
@@ -17,10 +18,10 @@ export default class MainAppsContainer extends Component {
     componentDidMount() {
 
         $('.btn-filter').on('click', function () {
-            var $target = $(this).data('target');
-            if ($target != 'all') {
+            var target = $(this).data('target');
+            if (target != 'all') {
                 $('.table tbody tr').css('display', 'none');
-                $('.table tr[data-status="' + $target + '"]').fadeIn('slow');
+                $('.table tbody tr[data-status="' + target + '"]').fadeIn('slow');
             } else {
                 $('.table tbody tr').css('display', 'none').fadeIn('slow');
             }
@@ -54,23 +55,47 @@ export default class MainAppsContainer extends Component {
         if (appArray.length != 0) {
             // alert("check" + JSON.stringify(appArray))
             var that = this;
-            Utilities.apiCallAppChecker(appArray,{prod:($("#prod").prop("checked") === true )? "PROD" : "STG"}).always(function (response) {
-                //alert("res" + response)
-                that.setState({
-                    response: response
-                }, ()=> {
-                });
+            Utilities.apiCallAppChecker(appArray, {prod: ($("#prod").prop("checked") === true ) ? "PROD" : "STG"}).always(function (response) {
+                if (response.status === 500) {
+                    that.setState({
+                        response: {succed: [], failed: {"error": response.responseJSON.error}}
+                    }, ()=> {
+                    });
+
+                } else {
+                    that.setState({
+                        response: response
+                    }, ()=> {
+
+                        response.succed.forEach(function (elm) {
+                            var key = Object.keys(elm)[0];
+                            $('#line-' + key).attr('data-status', 'success');
+                            $('#line-' + key).attr('class', 'success');
+                        })
+
+                        response.failed.forEach(function (elm) {
+                            var key = Object.keys(elm)[0];
+                            $('#line-' + key).attr('data-status', 'danger');
+                            $('#line-' + key).attr('class', 'danger');
+
+                        });
+
+                    });
+                }
+
             });
         }
     }
-    enableProd(){
-        if($("#prod").prop("checked")) {
+
+    enableProd() {
+        if ($("#prod").prop("checked")) {
         } else {
         }
     }
 
 
     render() {
+
         var allApplications = [];
 
 
@@ -102,7 +127,7 @@ export default class MainAppsContainer extends Component {
                                                            defaultChecked/>
                                                     Success
                                                 </label>
-                                                <label className="btn btn-danger btn-filter" data-target="failed">
+                                                <label className="btn btn-danger btn-filter" data-target="danger">
                                                     <input type="radio" name="options" id="option2" autoComplete="off"/>
                                                     Failed
                                                 </label>
@@ -162,7 +187,8 @@ export default class MainAppsContainer extends Component {
                         <li className="list-group-item">
                             Disable testing on PROD
                             <div className="material-switch pull-right">
-                                <input id="prod" name="prod" type="checkbox" onChange={this.enableProd.bind(this)}/>
+                                <input id="prod" name="prod" type="checkbox" onChange={this.enableProd.bind(this)}
+                                       defaultChecked/>
                                 <label htmlFor="prod" className="label-success"></label>
                             </div>
                         </li>
@@ -170,13 +196,13 @@ export default class MainAppsContainer extends Component {
                 </div>
                 <div className="row">
                     <div className="col-md-10 col-md-offset-1">
-                        <h1>Response Failed:</h1>
+                        <h2 style={{padding: "0px !important"}}>Response application Failed:</h2>
                         <JSONViewver data={this.state.response.failed}/>
                     </div>
                 </div>
                 <div className="row">
                     <div className="col-md-10 col-md-offset-1">
-                        <h1>Response Succed:</h1>
+                        <h2 style={{padding: "0px!important"}}>Response application Succed:</h2>
                         <JSONViewver data={this.state.response.succed}/>
                     </div>
                 </div>

@@ -27,7 +27,7 @@ export default class AppTableLine extends BaseComponent {
 
         return (
 
-            <tr id={"line-" + this.props.appName} data-status={"success"} className="success"
+            <tr id={"line-" + this.props.appName} data-status={""} className=""
                 style={{textAlign: "center"}}>
                 <td ><input type="checkbox" className="checkthis" id={this.props.appName} name={this.props.appName}
                             value={this.props.appName}/></td>

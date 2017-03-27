@@ -1,6 +1,6 @@
 {
     "values": [{
-        "key": "hostname",
-        "value": "google.itXXXX"
+        "key": "authValue",
+        "value": "authValueGeneralForPROD"
     }]
 }

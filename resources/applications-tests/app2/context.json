@@ -2,9 +2,9 @@
   "iterationData-PROD": ["/hostnames/PROD/hostnames.json"],
   "iterationData-STG": ["/hostnames/PROD/hostnames.json"],
   "iterationData-PRE": ["/hostnames/PROD/hostnames.json"],
-  "environment-PROD": ["environment.json"],
-  "environment-STG": ["environment.json"],
-  "environment-PRE": ["environment.json"],
+  "environment-PROD": [],
+  "environment-STG": [],
+  "environment-PRE": [],
   "description" : "a little description for this App 1",
   "criticity" : "High/Low/Medium",
   "urlDocumentLink" : "http://"

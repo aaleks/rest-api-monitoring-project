@@ -3,5 +3,6 @@
   "reportOutput":"./reports/",
   "logDirectory" : "./logs/",
   "iterationData": "./resources/data/",
+  "dataFolder": "./resources/data",
   "htmlTemplate" :"./html/template-default.hbs"
 }

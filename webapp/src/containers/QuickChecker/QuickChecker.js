@@ -105,7 +105,7 @@ export default class QuickChecker extends BaseComponent {
 
         var that = this;
 
-        Utilities.apiCallAppChecker(arr,{prod:($("#prod").prop("checked") === true )? "PROD" : "STG"}).always(function (response) {
+        Utilities.apiCallAppChecker(arr, {prod: ($("#prod").prop("checked") === true ) ? "PROD" : "STG"}).always(function (response) {
             //alert("res" + response)
             that.setState({
                 response: response
@@ -123,7 +123,7 @@ export default class QuickChecker extends BaseComponent {
 
                 <div className="container">
                     <div className="row">
-                        <div className="col-md-6 col-md-offset-3">
+                        <div className="col-md-10 col-md-offset-1">
                             <form onSubmit={this.checkApps.bind(this)} style={{textAlign: "center"}}>
                                 <h1>Quick check app</h1>
                                 <div className="form-group tags">
@@ -141,25 +141,25 @@ export default class QuickChecker extends BaseComponent {
                         </div>
                     </div>
                 </div>
-                <div className="row">
-                    <div className="col-md-10 col-md-offset-1">
-                        <li className="list-group-item">
-                            Disable testing on PROD
-                            <div className="material-switch pull-right">
-                                <input id="prod" name="prod" type="checkbox" />
-                                <label htmlFor="prod" className="label-success"></label>
-                            </div>
-                        </li>
-                    </div>
-                </div>
 
-                <br/>
-                <br/>
-                <br/>
                 <div className="container">
                     <div className="row">
                         <div className="col-md-10 col-md-offset-1">
-                            <h1>Failed Response :</h1>
+                            <li className="list-group-item">
+                                Disable testing on PROD
+                                <div className="material-switch pull-right">
+                                    <input id="prod" name="prod" type="checkbox" defaultChecked/>
+                                    <label htmlFor="prod" className="label-success"></label>
+                                </div>
+                            </li>
+                        </div>
+                    </div>
+                </div>
+
+                <div className="container">
+                    <div className="row">
+                        <div className="col-md-10 col-md-offset-1">
+                            <h2 style={{padding: "0px !important"}}>Response application Failed:</h2>
                             <JSONViewver data={this.state.response.failed}/>
                         </div>
                     </div>
@@ -168,7 +168,7 @@ export default class QuickChecker extends BaseComponent {
                 <div className="container">
                     <div className="row">
                         <div className="col-md-10 col-md-offset-1">
-                            <h1>Succed Response :</h1>
+                            <h2 style={{padding: "0px !important"}}>Response application Succed:</h2>
                             <JSONViewver data={this.state.response.succed}/>
                         </div>
                     </div>

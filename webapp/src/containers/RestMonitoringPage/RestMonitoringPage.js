@@ -22,6 +22,7 @@ export default class RestMonitoringPage extends BaseComponent {
 
 
     componentWillMount() {
+
         var _this = this;
         var allAppsFound = [];
         $.ajax({

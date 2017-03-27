@@ -42,19 +42,26 @@ export default class MainAppsContainer extends Component {
 
     }
 
-    checkApps(e) {
-        e.preventDefault();
+    checkApps(appToCheck, e) {
+        if (e != undefined) {
+            e.preventDefault();
+        }
 
         var appArray = [];
-        $("#mytable input[type=checkbox]:checked").each(function () {
-            if ($(this).val() != "on") {
-                appArray.push($(this).val());
-            }
-        });
+        if (appToCheck == undefined) {
+            $("#mytable input[type=checkbox]:checked").each(function () {
+                if ($(this).val() != "on") {
+                    appArray.push($(this).val());
+                }
+            });
+        } else {
+            appArray.push(appToCheck);
+        }
 
         if (appArray.length != 0) {
             // alert("check" + JSON.stringify(appArray))
             var that = this;
+            NProgress.start();
             Utilities.apiCallAppChecker(appArray, {prod: ($("#prod").prop("checked") === true ) ? "PROD" : "STG"}).always(function (response) {
                 if (response.status === 500) {
                     that.setState({
@@ -77,8 +84,10 @@ export default class MainAppsContainer extends Component {
                             var key = Object.keys(elm)[0];
                             $('#line-' + key).attr('data-status', 'danger');
                             $('#line-' + key).attr('class', 'danger');
-
                         });
+
+                        NProgress.done();
+
 
                     });
                 }
@@ -95,15 +104,14 @@ export default class MainAppsContainer extends Component {
 
 
     render() {
-
         var allApplications = [];
-
-
         var that = this;
         Object.keys(this.props.apps).forEach(function (key) {
             allApplications.push(
                 <AppTableLine key={key} appContent={that.props.apps[key]} appName={key}
-                              currentCounter={allApplications.length}/>
+                              currentCounter={allApplications.length} forceCheckApp={(appName)=> {
+                    that.checkApps(appName, undefined)
+                }}/>
             );
         });
 
@@ -171,7 +179,7 @@ export default class MainAppsContainer extends Component {
                                     <div className="col col-xs-3">
                                         <div className="pull-right">
                                             <button type="button" className="btn btn-primary"
-                                                    onClick={this.checkApps.bind(this)}>
+                                                    onClick={this.checkApps.bind(this, undefined)}>
                                                 <span className="glyphicon glyphicon-check" aria-hidden="true"/>
                                                 Force check for selected apps
                                             </button>

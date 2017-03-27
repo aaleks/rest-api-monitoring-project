@@ -105,11 +105,15 @@ export default class QuickChecker extends BaseComponent {
 
         var that = this;
 
+        NProgress.start();
+
         Utilities.apiCallAppChecker(arr, {prod: ($("#prod").prop("checked") === true ) ? "PROD" : "STG"}).always(function (response) {
             //alert("res" + response)
             that.setState({
                 response: response
             }, ()=> {
+                NProgress.done();
+
             });
         });
 

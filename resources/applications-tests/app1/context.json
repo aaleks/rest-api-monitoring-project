@@ -7,5 +7,5 @@
   "environment-PRE": ["environment.json","/environment/PRE/environment.json"],
   "description" : "a little description for this App 1",
   "criticity" : "High/Low/Medium",
-  "urlDocumentLink" : "http://"
+  "urlDocumentLink" : "http://google.fr"
 }

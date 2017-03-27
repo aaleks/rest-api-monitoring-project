@@ -22,7 +22,7 @@ function executeNewman(args) {
 
     var apps = args.apps;
     var targetedEnv = args.prod;
-    console.log( " args.prod  " + args.prod)
+    console.log(" args.prod  " + args.prod)
     //all apps here
     var directoryList = requireDir(path.join(__dirname, rootFolder + CONFIG.rootPathApps), {recurse: true});
     if (apps.length == 0) {
@@ -40,18 +40,24 @@ function executeNewman(args) {
 
         tmpConf[currentAppName].contextFileEnabled = false; //base datafile
 
-        tmpConf[currentAppName].postmanFile = require(tmpConf[currentAppName].rootPathApps + currentAppName + "/simplecollection.json"); // empty if you want to test all apps
+        var currentCollectionFile = fs.readdirSync(tmpConf[currentAppName].rootPathApps + currentAppName);
+        currentCollectionFile = currentCollectionFile.filter(function (current) {
+            return current.indexOf(".postman_collection.json") > -1; // keep numbers divisible by 2
+        });
 
-        tmpConf[currentAppName].iterationData = require(path.join(__dirname, rootFolder + CONFIG.iterationData + directoryList[currentAppName]["context"]["iterationData-"+targetedEnv]));
+
+        tmpConf[currentAppName].postmanFile = require(tmpConf[currentAppName].rootPathApps + currentAppName + "/" + currentCollectionFile); // empty if you want to test all apps
+
+        tmpConf[currentAppName].iterationData = require(path.join(__dirname, rootFolder + CONFIG.iterationData + directoryList[currentAppName]["context"]["iterationData-" + targetedEnv]));
 
         // tmpConf[currentAppName].environmentData = [{"key": "hostname","value": "google.it"},{"key": "hostname11","value": "google.it"}]
 
-        var envObject = {"values":[]};//currentFile.startWith
-        directoryList[currentAppName]["context"]["environment-"+targetedEnv].forEach((currentFile)=>{
-            if(currentFile.startsWith("/")){
-                envObject.values=envObject.values.concat(require(rootFolder + CONFIG.dataFolder + currentFile ).values);
-            }else{
-                envObject.values=envObject.values.concat(require(tmpConf[currentAppName].rootPathApps + currentAppName + "/" + currentFile).values);
+        var envObject = {"values": []};//currentFile.startWith
+        directoryList[currentAppName]["context"]["environment-" + targetedEnv].forEach((currentFile)=> {
+            if (currentFile.startsWith("/")) {
+                envObject.values = envObject.values.concat(require(rootFolder + CONFIG.dataFolder + currentFile).values);
+            } else {
+                envObject.values = envObject.values.concat(require(tmpConf[currentAppName].rootPathApps + currentAppName + "/" + currentFile).values);
             }
 
         });
@@ -59,7 +65,7 @@ function executeNewman(args) {
 
 
         //added default env object
-        tmpConf[currentAppName].environmentData.values = tmpConf[currentAppName].environmentData.values.concat(require(path.join(__dirname, rootFolder + CONFIG.iterationData + "environment/"+targetedEnv+"/environment.json")).values)
+        tmpConf[currentAppName].environmentData.values = tmpConf[currentAppName].environmentData.values.concat(require(path.join(__dirname, rootFolder + CONFIG.iterationData + "environment/" + targetedEnv + "/environment.json")).values)
         //CONFIG[currentAppName].environmentData = directoryList[currentAppName]["environment-PROD"];
         //console.log("tmpConf[currentAppName].environmentData" + JSON.stringify(tmpConf[currentAppName].environmentData))
 
@@ -103,7 +109,7 @@ var AppsController = {
         }).catch((err) => {
             console.log("BIG ERROR NEEDS TO BE INVESTIGATE " + err);
             res.statusCode = 500;
-            return res.json({error:err.message});
+            return res.json({error: err.message});
         });
     }
 };

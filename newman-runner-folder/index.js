@@ -57,17 +57,21 @@ function allTestedAppResult(options) {
                                 currentErrorObject.urlCalled = elm.request.url.toString();
                                 currentErrorObject.atHostname = url.parse(elm.request.url.toString()).hostname;
                                 currentErrorObject.response = elm.response.body;
-
+                                currentErrorObject.method = elm.request.method;
+                                currentErrorObject.status = elm.response.status;
+                                currentErrorObject.code = elm.response.code;
 
                                 if (elm.requestError != undefined) {
                                     currentErrorObject.error = elm.requestError.code;
                                     currentErrorObject.message = elm.requestError.code;
-                                } else if (elm.response.code == 502) {
-                                    logger.error("[Execution-Error-Proxy] error proxy for :::: " + currentErrorObject.urlCalled)
                                     currentCallsFailedForApps.push(currentErrorObject);
-                                } else if (elm.assertions.length > 0) {
-
-
+                                } else if (elm.assertions === undefined && elm.response.code !== 200 && elm.response.status !== "OK") {
+                                    logger.error("[Execution-Error-Proxy] error proxy for :::: " + currentErrorObject.urlCalled)
+                                    currentErrorObject.status = elm.response.status;
+                                    currentErrorObject.code = elm.response.code;
+                                    currentErrorObject.error = elm.response.code;
+                                    currentCallsFailedForApps.push(currentErrorObject);
+                                } else if (elm.assertions != undefined && elm.assertions.length > 0) {
                                     elm.assertions.forEach((currentFilteredElement)=> {
                                         if (currentFilteredElement.error != undefined) {
                                             logger.info("[Execution-assertion-error] Addind error for " + currentApp + ", for call :" + currentErrorObject.urlCalled + " assertion for currentFilteredElement.error : " + JSON.stringify(currentFilteredElement.error))
@@ -84,6 +88,7 @@ function allTestedAppResult(options) {
                                     }
 
                                 } else {
+                                    console.log("HEREe")
                                     //added app to succed calls
                                     currentCallsSuccedForApps.push(currentErrorObject);
                                 }

@@ -62,7 +62,7 @@ export default React.createClass({
 
                 {( this.state.show ?
                     <JSONTree data={this.props.data === undefined ? {} : this.props.data} theme={theme}
-                              invertTheme={false}/>
+                              invertTheme={false} shouldExpandNode={(keyName, data, level)=>level < 2}/>
                     : false )}
             </div>
         );

@@ -1,0 +1,24 @@
+{
+	"variables": [],
+	"info": {
+		"name": "test collection app1",
+		"_postman_id": "78fb150c-4b64-f9b9-497a-2635384a7e25",
+		"description": "",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "google request",
+			"event": [
+			],
+			"request": {
+				"url": "http://www.mocky.io/v2/58d967360f00005a0d254799",
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"description": "http://www.mocky.io/v2/58d966cd0f00005e0d254798"
+			},
+			"response": []
+		}
+	]
+}

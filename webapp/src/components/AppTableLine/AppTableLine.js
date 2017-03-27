@@ -9,12 +9,9 @@ export default class AppTableLine extends BaseComponent {
     }
 
     componentDidMount() {
-
     }
 
     componentWillUnmount() {
-        /*
-         */
     }
 
     forceCheck() {
@@ -24,9 +21,7 @@ export default class AppTableLine extends BaseComponent {
 
     render() {
 
-
         return (
-
             <tr id={"line-" + this.props.appName} data-status={""} className=""
                 style={{textAlign: "center"}}>
                 <td ><input type="checkbox" className="checkthis" id={this.props.appName} name={this.props.appName}
@@ -44,7 +39,6 @@ export default class AppTableLine extends BaseComponent {
                         className="glyphicon glyphicon-check" aria-hidden="true"/></a>
                 </td>
             </tr>
-
         );
     }
 }
